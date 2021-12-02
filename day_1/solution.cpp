@@ -45,7 +45,6 @@ void calculateDepthWindows(std::vector<int> & depthWindows, std::vector<int> & d
         int windowTotal = depths[i] + depths[i-1] + depths[i-2];
         depthWindows.push_back(depths[i] + depths[i-1] + depths[i-2]);
     }
-
 }
 
 
