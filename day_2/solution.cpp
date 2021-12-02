@@ -21,12 +21,80 @@ bool readFileContent(std::string fileName, std::vector<std::string> & fileLines)
     return true;
 }
 
+struct Command {
+    std::string direction;
+    int magnitude;
+};
+
+void parseCommands(std::vector<std::string> & fileLines, std::vector<Command> & commands) {
+    for (std::string line : fileLines) {
+        int split_position = line.find(" ");
+        std::string direction = line.substr(0, split_position);
+        int magnitude = std::stoi(line.substr(split_position, std::string::npos));
+        Command command;
+        command.magnitude = magnitude;
+        command.direction = direction;
+        commands.push_back(command);
+    }
+}
+
+struct Position {
+    int x;
+    int y;
+    int aim;
+};
+
+void calculatePositionPart1(Position & position, std::vector<Command> & commands) {
+    for (Command command : commands) {
+        if (command.direction.compare("forward")==0) {
+            position.x += command.magnitude;
+        } else if (command.direction.compare("up")==0) {
+            position.y -= command.magnitude;
+        } else if (command.direction.compare("down")==0) {
+            position.y += command.magnitude;
+        } else {
+            std::cerr << "Unrecognised command " << command.direction << std::endl;
+            throw;
+        }
+    }
+}
+
 void solvePart1(std::vector<std::string> & fileLines) {
-    std::cout << "Part 1 solved" << std::endl;
+    std::vector<Command> commands;
+    parseCommands(fileLines, commands);
+    Position position;
+    position.x = 0; position.y = 0;
+    calculatePositionPart1(position, commands);
+    int solution = position.x * position.y;
+
+    std::cout << "Part 1 solution: " << solution << std::endl;
+}
+
+void calculatePositionPart2(Position & position, std::vector<Command> & commands) {
+    for (Command command : commands) {
+        if (command.direction.compare("forward")==0) {
+            position.x += command.magnitude;
+            position.y += position.aim * command.magnitude;
+        } else if (command.direction.compare("up")==0) {
+            position.aim -= command.magnitude;
+        } else if (command.direction.compare("down")==0) {
+            position.aim += command.magnitude;
+        } else {
+            std::cerr << "Unrecognised command " << command.direction << std::endl;
+            throw;
+        }
+    }
 }
 
 void solvePart2(std::vector<std::string> & fileLines) {
-    std::cout << "Part 2 solved" << std::endl;
+    std::vector<Command> commands;
+    parseCommands(fileLines, commands);
+    Position position;
+    position.x = 0; position.y = 0; position.aim = 0;
+    calculatePositionPart2(position, commands);
+    int solution = position.x * position.y;
+
+    std::cout << "Part 2 solution: " << solution << std::endl;
 }
 
 int readPartNumber(char* argv[]) {
