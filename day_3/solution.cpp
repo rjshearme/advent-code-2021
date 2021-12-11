@@ -22,11 +22,44 @@ bool readFileContent(std::string fileName, std::vector<std::string> & fileLines)
 }
 
 void solvePart1(std::vector<std::string> & fileLines) {
-    std::cout << "Part 1 solved" << std::endl;
+    int number_of_bits = fileLines.at(0).length();
+    int number_of_lines = fileLines.size();
+    std::string gamma_rate_string;
+    std::string epsilon_rate_string;
+    for (int bit_position=0; bit_position < number_of_bits; bit_position++) {
+        int bit_0_count = 0;
+        int bit_1_count = 0;
+        for (std::string line : fileLines) {
+            int line_bit = line.at(bit_position) - 48;
+            if (line_bit == 0) {
+                bit_0_count += 1;
+            } else {
+                bit_1_count += 1;
+            }
+        }
+        if (bit_1_count > bit_0_count) {
+            gamma_rate_string.append("1");
+            epsilon_rate_string.append("0");
+        } else {
+            gamma_rate_string.append("0");
+            epsilon_rate_string.append("1");
+        }
+    }
+    int gamma_rate = std::stoi(gamma_rate_string, 0, 2);
+    int epsilon_rate = std::stoi(epsilon_rate_string, 0, 2);
+
+    std::cout << "Power consumption of the submarine is: " << gamma_rate * epsilon_rate << std::endl;
 }
 
 void solvePart2(std::vector<std::string> & fileLines) {
-    std::cout << "Part 2 solved" << std::endl;
+    int number_of_bits = fileLines.at(0).length();
+
+
+}
+
+std::string filterValues(std::vector<std::string> & values) {
+    return "hello";
+
 }
 
 int readPartNumber(char* argv[]) {
